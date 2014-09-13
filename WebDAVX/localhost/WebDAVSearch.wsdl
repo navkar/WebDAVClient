@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Search">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strWorkspaceURL" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strSearchKeyword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </types>
+  <message name="SearchSoapIn">
+    <part name="parameters" element="s0:Search" />
+  </message>
+  <message name="SearchSoapOut">
+    <part name="parameters" element="s0:SearchResponse" />
+  </message>
+  <message name="SearchHttpGetIn">
+    <part name="strWorkspaceURL" type="s:string" />
+    <part name="strSearchKeyword" type="s:string" />
+  </message>
+  <message name="SearchHttpGetOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="SearchHttpPostIn">
+    <part name="strWorkspaceURL" type="s:string" />
+    <part name="strSearchKeyword" type="s:string" />
+  </message>
+  <message name="SearchHttpPostOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <portType name="WebDAVRequestSoap">
+    <operation name="Search">
+      <input message="s0:SearchSoapIn" />
+      <output message="s0:SearchSoapOut" />
+    </operation>
+  </portType>
+  <portType name="WebDAVRequestHttpGet">
+    <operation name="Search">
+      <input message="s0:SearchHttpGetIn" />
+      <output message="s0:SearchHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="WebDAVRequestHttpPost">
+    <operation name="Search">
+      <input message="s0:SearchHttpPostIn" />
+      <output message="s0:SearchHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="WebDAVRequestSoap" type="s0:WebDAVRequestSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="Search">
+      <soap:operation soapAction="http://tempuri.org/Search" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="WebDAVRequestHttpGet" type="s0:WebDAVRequestHttpGet">
+    <http:binding verb="GET" />
+    <operation name="Search">
+      <http:operation location="/Search" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="WebDAVRequestHttpPost" type="s0:WebDAVRequestHttpPost">
+    <http:binding verb="POST" />
+    <operation name="Search">
+      <http:operation location="/Search" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <service name="WebDAVRequest">
+    <port name="WebDAVRequestSoap" binding="s0:WebDAVRequestSoap">
+      <soap:address location="http://localhost/WebDAVTest/WebDAVSearch.asmx" />
+    </port>
+    <port name="WebDAVRequestHttpGet" binding="s0:WebDAVRequestHttpGet">
+      <http:address location="http://localhost/WebDAVTest/WebDAVSearch.asmx" />
+    </port>
+    <port name="WebDAVRequestHttpPost" binding="s0:WebDAVRequestHttpPost">
+      <http:address location="http://localhost/WebDAVTest/WebDAVSearch.asmx" />
+    </port>
+  </service>
+</definitions>
